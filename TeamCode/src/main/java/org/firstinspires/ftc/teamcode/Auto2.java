@@ -67,7 +67,7 @@ public class Auto2 extends LinearOpMode {
     private static final int TURN_TO_UNHOOK = -800;
     private static final int JIGGLE_TURN = -500;
     private static final int LAND_ROBOT = -9076;
-    private static final double LANDER_CATCH_UP =0.75;
+    private static final double LANDER_CATCH_UP = 0.75;
     private static final double LANDER_CATCH_DOWN = 0;
     private static final double TURN_SHARPNESS = 0.25;
     private static final int MOVE_STRAIGHT_TO_CRATER = 2500;
@@ -76,12 +76,14 @@ public class Auto2 extends LinearOpMode {
     private static final int LEFT_QUARTER_CIRCLE = 2700;
     private static final int JEWEL_POSITION = 1000;
 
+    private static final int SMALL_DISTANCE = 100;
     private static final int JIGGLE_RIGHT = 250;
     private static final int JIGGLE_LEFT = -250;
-    private static final int  FORTYFIVEDEGREEROTATE=500;
+    private static final int FORTYFIVEDEGREEROTATE = 500;
     //gets us tp base
     private static final int FORWARD_BASE = 3000;
-//public ElapsedTime mRuntime=new ElapsedTime();
+
+    //public ElapsedTime mRuntime=new ElapsedTime();
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
@@ -90,7 +92,7 @@ public class Auto2 extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         landerLift = hardwareMap.get(DcMotor.class, "Lander_Lift");
         linearExtender = hardwareMap.get(DcMotor.class, "Linear_Extension");
@@ -113,17 +115,19 @@ public class Auto2 extends LinearOpMode {
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-       // while (opModeIsActive()) {
+        // while (opModeIsActive()) {
         // lander_Run(LANDED_ROBOT);
 
         lander_Run(LAND_ROBOT, "Lowering Lift");
 
         landerStopper.setPosition(LANDER_CATCH_UP);
         runtime.reset();
-        while(runtime.time()<1){        }
+        while (runtime.time() < 1) {
+        }
 
+        Unhook("Unhooking");
 
-        RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-1");
+/*        RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-1");
 
         RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-2");
 
@@ -134,38 +138,41 @@ public class Auto2 extends LinearOpMode {
         RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-3");
 
         RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-4");
-
+*/
         runtime.reset();
-        while(runtime.time()<2){        }
+        while (runtime.time() < 2) {
+        }
 
-        turnLeft(TURN_TO_UNHOOK, "Unhooking");
+//        turnLeft(TURN_TO_UNHOOK, "Unhooking");
 
-        runtime.reset();
-        while(runtime.time()<2){        }
-
+/*        runtime.reset();
+        while (runtime.time() < 2) {
+        }
+*/
         telemetry.addLine("Landed");
         telemetry.update();
 
 
         //Back up a short distance
-        moveStraight(SHORT_BACK,"BACKING UP");
+        moveStraight(SHORT_BACK, "BACKING UP");
 
         telemetry.addLine("FINISHED BACKING UP");
         telemetry.update();
 
 
         runtime.reset();
-        while(runtime.time()<3){        }
+        while (runtime.time() < 2) {
+        }
 
 
         //Turn 90 left forwards
-        turnRight(LEFT_QUARTER_CIRCLE,"First Turn");
+        turnRight(LEFT_QUARTER_CIRCLE, "First Turn");
         telemetry.addLine("TURNED 90 LEFT");
         telemetry.update();
 
         runtime.reset();
-        while(runtime.time()<3){        }
-
+        while (runtime.time() < 2) {
+        }
 
 
         moveStraight(BOX, "MOVING TO BOX");
@@ -173,90 +180,50 @@ public class Auto2 extends LinearOpMode {
         telemetry.update();
 
         runtime.reset();
-        while(runtime.time()<10){        }
+        while (runtime.time() < 10) {
+        }
 
 
         pincherL.setPosition(SERVOL_OPEN);
         pincherR.setPosition(SERVOR_OPEN);
-        RotateInPlace(FORTYFIVEDEGREEROTATE,"Rotate Towards Crater");
-        moveStraight(MOVE_STRAIGHT_TO_CRATER,"Get to Crater");
+        RotateInPlace(FORTYFIVEDEGREEROTATE, "Rotate Towards Crater");
+        moveStraight(MOVE_STRAIGHT_TO_CRATER, "Get to Crater");
         runtime.reset();
-        while(runtime.time()<1){
+        while (runtime.time() < 1) {
             collectorAngle.setPower(DRIVE_POWER);
         }
 
-        while(runtime.time()<2){
+        while (runtime.time() < 2) {
             linearExtender.setPower(DRIVE_POWER);
         }
 
     }
 
 
-
-
-
-
-
-
     /******************************************************************************/
-        public void turnRight (int target_interval, String Status)
-        {
-
-            int initialLeft = leftDrive.getCurrentPosition();
-
-            int initialRight = rightDrive.getCurrentPosition();
-
-            int target_Right = initialRight + target_interval;
-
-            double target_Left = initialLeft + (TURN_SHARPNESS*target_interval);
-
-            while (rightDrive.getCurrentPosition() <target_Right && leftDrive.getCurrentPosition()<target_Left)
-            {
-                rightDrive.setPower(DRIVE_POWER);
-                leftDrive.setPower(TURN_SHARPNESS*DRIVE_POWER);
-
-                telemetry.addData("Run","Time:   "+runtime.toString());
-                telemetry.addLine(Status);
-                telemetry.addData("initialLeft", "Left Motor Position:  "+initialLeft);
-                telemetry.addData("CurrentLeftPosition", "Current Pos:  "+leftDrive.getCurrentPosition());
-                telemetry.addData("TargetLeft", "Target Left Position:  "+target_Left);
-
-                telemetry.addData("initialRight", "Right Motor Position:  "+initialRight);
-                telemetry.addData("CurrentRightPosition", "Current Pos:  "+rightDrive.getCurrentPosition());
-                telemetry.addData("TargetRight", "Target Right Position:  "+target_Right);
-
-                telemetry.update();
-            }
-
-             rightDrive.setPower(STOP_MOTOR);
-             leftDrive.setPower(STOP_MOTOR);
-        }
-
-    public void turnLeft (int target_interval, String Status)
-    {
+    public void turnRight(int target_interval, String Status) {
 
         int initialLeft = leftDrive.getCurrentPosition();
 
         int initialRight = rightDrive.getCurrentPosition();
 
-        double target_Right = initialRight + (TURN_SHARPNESS*target_interval);
+        int target_Right = initialRight + target_interval;
 
-        int target_Left = initialLeft + (target_interval);
+        double target_Left = initialLeft + (TURN_SHARPNESS * target_interval);
 
-        while (rightDrive.getCurrentPosition() <target_Right && leftDrive.getCurrentPosition()<target_Left)
-        {
-            rightDrive.setPower(TURN_SHARPNESS*DRIVE_POWER);
-            leftDrive.setPower(DRIVE_POWER);
+        while (rightDrive.getCurrentPosition() < target_Right && leftDrive.getCurrentPosition() < target_Left) {
+            rightDrive.setPower(DRIVE_POWER);
+            leftDrive.setPower(TURN_SHARPNESS * DRIVE_POWER);
 
-            telemetry.addData("Run","Time:   "+runtime.toString());
+            telemetry.addData("Run", "Time:   " + runtime.toString());
             telemetry.addLine(Status);
-            telemetry.addData("initialLeft", "Left Motor Position:  "+initialLeft);
-            telemetry.addData("CurrentLeftPosition", "Current Pos:  "+leftDrive.getCurrentPosition());
-            telemetry.addData("TargetLeft", "Target Left Position:  "+target_Left);
+            telemetry.addData("initialLeft", "Left Motor Position:  " + initialLeft);
+            telemetry.addData("CurrentLeftPosition", "Current Pos:  " + leftDrive.getCurrentPosition());
+            telemetry.addData("TargetLeft", "Target Left Position:  " + target_Left);
 
-            telemetry.addData("initialRight", "Right Motor Position:  "+initialRight);
-            telemetry.addData("CurrentRightPosition", "Current Pos:  "+rightDrive.getCurrentPosition());
-            telemetry.addData("TargetRight", "Target Right Position:  "+target_Right);
+            telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
+            telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
+            telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
 
             telemetry.update();
         }
@@ -265,99 +232,18 @@ public class Auto2 extends LinearOpMode {
         leftDrive.setPower(STOP_MOTOR);
     }
 
-    public void moveStraight (int target_interval, String Status)
-    {
+    public void turnLeft(int target_interval, String Status) {
 
         int initialLeft = leftDrive.getCurrentPosition();
 
-                int initialRight = rightDrive.getCurrentPosition();
+        int initialRight = rightDrive.getCurrentPosition();
 
-                int target_Right = initialRight + target_interval;
+        double target_Right = initialRight + (TURN_SHARPNESS * target_interval);
 
-                int target_Left = initialLeft + target_interval;
+        int target_Left = initialLeft + (target_interval);
 
-                if (initialRight < target_Right)
-                {
-                    while (rightDrive.getCurrentPosition() <target_Right && leftDrive.getCurrentPosition()<target_Left)
-                    {
-                        rightDrive.setPower(DRIVE_POWER);
-                        leftDrive.setPower(DRIVE_POWER);
-
-                        telemetry.addData("Run","Time:   "+runtime.toString());
-                telemetry.addLine(Status);
-                telemetry.addData("initialLeft", "Left Motor Position:  "+initialLeft);
-                telemetry.addData("CurrentLeftPosition", "Current Pos:  "+leftDrive.getCurrentPosition());
-                telemetry.addData("TargetLeft", "Target Left Position:  "+target_Left);
-
-                telemetry.addData("initialRight", "Right Motor Position:  "+initialRight);
-                telemetry.addData("CurrentRightPosition", "Current Pos:  "+rightDrive.getCurrentPosition());
-                telemetry.addData("TargetRight", "Target Right Position:  "+target_Right);
-
-                telemetry.update();
-            }
-        }
-
-        else if (initialRight>target_Right)
-        {
-            while (rightDrive.getCurrentPosition() >target_Right && leftDrive.getCurrentPosition()>target_Left)
-            {
-                rightDrive.setPower(-DRIVE_POWER);
-                leftDrive.setPower(-DRIVE_POWER);
-
-                telemetry.addData("Run","Time:   "+runtime.toString());
-                telemetry.addLine(Status);
-                telemetry.addData("initialLeft", "Left Motor Position:  "+initialLeft);
-                telemetry.addData("CurrentLeftPosition", "Current Pos:  "+leftDrive.getCurrentPosition());
-                telemetry.addData("TargetLeft", "Target Left Position:  "+target_Left);
-
-                telemetry.addData("initialRight", "Right Motor Position:  "+initialRight);
-                telemetry.addData("CurrentRightPosition", "Current Pos:  "+rightDrive.getCurrentPosition());
-                telemetry.addData("TargetRight", "Target Right Position:  "+target_Right);
-
-                telemetry.update();
-            }
-        }
-
-        rightDrive.setPower(STOP_MOTOR);
-        leftDrive.setPower(STOP_MOTOR);
-
-
-    }
-    public void lander_Run (int target_interval, String Status)
-    {
-
-        int initialPos = landerLift.getCurrentPosition();
-        int target_pos = initialPos + target_interval;
-        if (initialPos < target_pos)
-        {
-            while (landerLift.getCurrentPosition() < target_pos)
-            {
-                landerLift.setPower(LANDER_LIFT_POWER);
-            }
-        }
-
-        else if (initialPos > target_pos)
-        {
-            while (landerLift.getCurrentPosition() > target_pos)
-            {
-                landerLift.setPower(-LANDER_LIFT_POWER);
-            }
-        }
-
-        landerLift.setPower(STOP_MOTOR);
-    }
-public void RotateInPlace(int target_interval,String Status) {
-    int initialLeft = leftDrive.getCurrentPosition();
-
-    int initialRight = rightDrive.getCurrentPosition();
-
-    int target_Right = initialRight + target_interval;
-
-    int target_Left = initialLeft - target_interval;
-
-    if (initialRight < target_Right) {
         while (rightDrive.getCurrentPosition() < target_Right && leftDrive.getCurrentPosition() < target_Left) {
-            rightDrive.setPower(-DRIVE_POWER);
+            rightDrive.setPower(TURN_SHARPNESS * DRIVE_POWER);
             leftDrive.setPower(DRIVE_POWER);
 
             telemetry.addData("Run", "Time:   " + runtime.toString());
@@ -372,9 +258,143 @@ public void RotateInPlace(int target_interval,String Status) {
 
             telemetry.update();
         }
+
+        rightDrive.setPower(STOP_MOTOR);
+        leftDrive.setPower(STOP_MOTOR);
+    }
+
+    public void moveStraight(int target_interval, String Status) {
+
+        int initialLeft = leftDrive.getCurrentPosition();
+
+        int initialRight = rightDrive.getCurrentPosition();
+
+        int target_Right = initialRight + target_interval;
+
+        int target_Left = initialLeft + target_interval;
+
+        if (initialRight < target_Right) {
+            while (rightDrive.getCurrentPosition() < target_Right && leftDrive.getCurrentPosition() < target_Left) {
+                rightDrive.setPower(DRIVE_POWER);
+                leftDrive.setPower(DRIVE_POWER);
+
+                telemetry.addData("Run", "Time:   " + runtime.toString());
+                telemetry.addLine(Status);
+                telemetry.addData("initialLeft", "Left Motor Position:  " + initialLeft);
+                telemetry.addData("CurrentLeftPosition", "Current Pos:  " + leftDrive.getCurrentPosition());
+                telemetry.addData("TargetLeft", "Target Left Position:  " + target_Left);
+
+                telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
+                telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
+                telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
+
+                telemetry.update();
+            }
+        } else if (initialRight > target_Right) {
+            while (rightDrive.getCurrentPosition() > target_Right && leftDrive.getCurrentPosition() > target_Left) {
+                rightDrive.setPower(-DRIVE_POWER);
+                leftDrive.setPower(-DRIVE_POWER);
+
+                telemetry.addData("Run", "Time:   " + runtime.toString());
+                telemetry.addLine(Status);
+                telemetry.addData("initialLeft", "Left Motor Position:  " + initialLeft);
+                telemetry.addData("CurrentLeftPosition", "Current Pos:  " + leftDrive.getCurrentPosition());
+                telemetry.addData("TargetLeft", "Target Left Position:  " + target_Left);
+
+                telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
+                telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
+                telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
+
+                telemetry.update();
+            }
+        }
+
+        rightDrive.setPower(STOP_MOTOR);
+        leftDrive.setPower(STOP_MOTOR);
+
+
+    }
+
+    public void lander_Run(int target_interval, String Status) {
+
+        int initialPos = landerLift.getCurrentPosition();
+        int target_pos = initialPos + target_interval;
+        if (initialPos < target_pos) {
+            while (landerLift.getCurrentPosition() < target_pos) {
+                landerLift.setPower(LANDER_LIFT_POWER);
+            }
+        } else if (initialPos > target_pos) {
+            while (landerLift.getCurrentPosition() > target_pos) {
+                landerLift.setPower(-LANDER_LIFT_POWER);
+            }
+        }
+
+        landerLift.setPower(STOP_MOTOR);
+    }
+
+    public void RotateInPlace(int target_interval, String Status) {
+        int initialLeft = leftDrive.getCurrentPosition();
+
+        int initialRight = rightDrive.getCurrentPosition();
+
+        int target_Right = initialRight + target_interval;
+
+        int target_Left = initialLeft - target_interval;
+
+        if (initialRight < target_Right) {
+            while (rightDrive.getCurrentPosition() < target_Right && leftDrive.getCurrentPosition() < target_Left) {
+                rightDrive.setPower(-DRIVE_POWER);
+                leftDrive.setPower(DRIVE_POWER);
+
+                telemetry.addData("Run", "Time:   " + runtime.toString());
+                telemetry.addLine(Status);
+                telemetry.addData("initialLeft", "Left Motor Position:  " + initialLeft);
+                telemetry.addData("CurrentLeftPosition", "Current Pos:  " + leftDrive.getCurrentPosition());
+                telemetry.addData("TargetLeft", "Target Left Position:  " + target_Left);
+
+                telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
+                telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
+                telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
+
+                telemetry.update();
+            }
+        }
+    }
+
+    public void Unhook(String Status) {
+        int initialLeft = leftDrive.getCurrentPosition();
+
+        int initialRight = rightDrive.getCurrentPosition();
+
+        int targetForwardLeft = initialLeft + SMALL_DISTANCE;
+
+        int targetBackLeft = initialLeft - SMALL_DISTANCE;
+
+        int targetForwardRight = initialRight + SMALL_DISTANCE;
+
+        int targetBackRight = initialRight - SMALL_DISTANCE;
+
+
+        for (int i=0; i<3; i++){
+
+            while (rightDrive.getCurrentPosition() < targetForwardRight && leftDrive.getCurrentPosition() < targetForwardLeft) {
+                rightDrive.setPower(DRIVE_POWER);
+                leftDrive.setPower(DRIVE_POWER);
+
+                telemetry.addLine(Status);
+                telemetry.update();
+            }
+            while (rightDrive.getCurrentPosition() < targetBackRight && leftDrive.getCurrentPosition() < targetBackLeft) {
+                rightDrive.setPower(-DRIVE_POWER);
+                leftDrive.setPower(-DRIVE_POWER);
+
+                telemetry.addLine(Status);
+                telemetry.update();
+            }
+        }
     }
 }
-}
+
 
 
 
