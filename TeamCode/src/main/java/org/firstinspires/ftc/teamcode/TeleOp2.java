@@ -51,7 +51,7 @@ public class TeleOp2 extends LinearOpMode {
 
     private static final double LANDER_POWER = 1;
 
-    private static final double LANDER_CATCH_UP = 1;
+    private static final double LANDER_CATCH_UP = 0.75;
     private static final double LANDER_CATCH_DOWN = 0;
 
     private static final double SLOW_MODE = 0.25;

@@ -67,7 +67,7 @@ public class Auto2 extends LinearOpMode {
     private static final int TURN_TO_UNHOOK = -800;
     private static final int JIGGLE_TURN = -500;
     private static final int LAND_ROBOT = -9076;
-    private static final double LANDER_CATCH_UP = 1;
+    private static final double LANDER_CATCH_UP =0.75;
     private static final double LANDER_CATCH_DOWN = 0;
     private static final double TURN_SHARPNESS = 0.25;
     private static final int MOVE_STRAIGHT_TO_CRATER = 2500;
@@ -76,8 +76,8 @@ public class Auto2 extends LinearOpMode {
     private static final int LEFT_QUARTER_CIRCLE = 2700;
     private static final int JEWEL_POSITION = 1000;
 
-    private static final int JIGGLE_RIGHT = 100;
-    private static final int JIGGLE_LEFT = -100;
+    private static final int JIGGLE_RIGHT = 250;
+    private static final int JIGGLE_LEFT = -250;
     private static final int  FORTYFIVEDEGREEROTATE=500;
     //gets us tp base
     private static final int FORWARD_BASE = 3000;
@@ -181,11 +181,11 @@ public class Auto2 extends LinearOpMode {
         RotateInPlace(FORTYFIVEDEGREEROTATE,"Rotate Towards Crater");
         moveStraight(MOVE_STRAIGHT_TO_CRATER,"Get to Crater");
         runtime.reset();
-        while(runtime.time()<4){
+        while(runtime.time()<1){
             collectorAngle.setPower(DRIVE_POWER);
         }
 
-        while(runtime.time()<4){
+        while(runtime.time()<2){
             linearExtender.setPower(DRIVE_POWER);
         }
 
@@ -356,9 +356,9 @@ public void RotateInPlace(int target_interval,String Status) {
     int target_Left = initialLeft - target_interval;
 
     if (initialRight < target_Right) {
-        while (rightDrive.getCurrentPosition() < target_Right && leftDrive.getCurrentPosition() > target_Left) {
-            rightDrive.setPower(DRIVE_POWER);
-            leftDrive.setPower(-DRIVE_POWER);
+        while (rightDrive.getCurrentPosition() < target_Right && leftDrive.getCurrentPosition() < target_Left) {
+            rightDrive.setPower(-DRIVE_POWER);
+            leftDrive.setPower(DRIVE_POWER);
 
             telemetry.addData("Run", "Time:   " + runtime.toString());
             telemetry.addLine(Status);
