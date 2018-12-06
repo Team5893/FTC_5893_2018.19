@@ -52,9 +52,9 @@ public class Auto2 extends LinearOpMode {
     Servo pincherL;
     Servo landerStopper;
 
-    private static final double SERVOL_OPEN = 0;
+    private static final double SERVOL_OPEN = 0.5;
     private static final double SERVOL_CLOSED = 1;
-    private static final double SERVOR_OPEN = 1;
+    private static final double SERVOR_OPEN = 0.5;
     private static final double SERVOR_CLOSED = 0;
 
     private static final double STOP_MOTOR = 0;
@@ -74,8 +74,8 @@ public class Auto2 extends LinearOpMode {
     private static final int LEFT_QUARTER_CIRCLE = 2700;
     private static final int JEWEL_POSITION = 1000;
 
-    private static final int JIGGLE_RIGHT = 500;
-    private static final int JIGGLE_LEFT = -500;
+    private static final int JIGGLE_RIGHT = 100;
+    private static final int JIGGLE_LEFT = -100;
 
     //gets us tp base
     private static final int FORWARD_BASE = 3000;

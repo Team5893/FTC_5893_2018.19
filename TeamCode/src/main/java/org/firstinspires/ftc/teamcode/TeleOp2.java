@@ -12,10 +12,10 @@ import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name="TeleOp2", group="Linear Opmode")
-//@Disabled
 public class TeleOp2 extends LinearOpMode {
 
-//Example change for github
+    //Example change for github
+//@Disabled
 
 
 
@@ -42,9 +42,9 @@ public class TeleOp2 extends LinearOpMode {
 
 
     //declare constants
-    private static final double SERVOL_OPEN = 0;
+    private static final double SERVOL_OPEN = 0.5;
     private static final double SERVOL_CLOSED = 1;
-    private static final double SERVOR_OPEN = 1;
+    private static final double SERVOR_OPEN = 0.5;
     private static final double SERVOR_CLOSED = 0;
 
     private static final double TRIGGER_THRESHOLD = 0.7;
