@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.vuforia.EyewearUserCalibrator;
+import com.qualcomm.robotcore.util.Range;
 
 
 
@@ -62,13 +63,14 @@ public class Auto2 extends LinearOpMode {
 
     private static final double LANDER_LIFT_POWER = 0.5;
     private static final int SHORT_BACK = -500;
-    private static final int BOX = 2100;
+    private static final int BOX = 2300;
     private static final int TURN_TO_UNHOOK = -800;
     private static final int JIGGLE_TURN = -500;
     private static final int LAND_ROBOT = -9076;
     private static final double LANDER_CATCH_UP = 1;
     private static final double LANDER_CATCH_DOWN = 0;
     private static final double TURN_SHARPNESS = 0.25;
+    private static final int MOVE_STRAIGHT_TO_CRATER = 2500;
 
     private static final int DETACHED_ROBOT = 1000;
     private static final int LEFT_QUARTER_CIRCLE = 2700;
@@ -76,7 +78,7 @@ public class Auto2 extends LinearOpMode {
 
     private static final int JIGGLE_RIGHT = 100;
     private static final int JIGGLE_LEFT = -100;
-
+    private static final int  FORTYFIVEDEGREEROTATE=500;
     //gets us tp base
     private static final int FORWARD_BASE = 3000;
 //public ElapsedTime mRuntime=new ElapsedTime();
@@ -122,16 +124,17 @@ public class Auto2 extends LinearOpMode {
 
 
         RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-1");
-        while(runtime.time()<1){        }
-
 
         RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-2");
-        while(runtime.time()<1){        }
 
         RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-3");
-        while(runtime.time()<1){        }
 
         RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-4");
+
+        RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-3");
+
+        RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-4");
+
         runtime.reset();
         while(runtime.time()<2){        }
 
@@ -164,6 +167,7 @@ public class Auto2 extends LinearOpMode {
         while(runtime.time()<3){        }
 
 
+
         moveStraight(BOX, "MOVING TO BOX");
         telemetry.addLine("STOPPED IN BOX");
         telemetry.update();
@@ -171,9 +175,30 @@ public class Auto2 extends LinearOpMode {
         runtime.reset();
         while(runtime.time()<10){        }
 
+
+        pincherL.setPosition(SERVOL_OPEN);
+        pincherR.setPosition(SERVOR_OPEN);
+        RotateInPlace(FORTYFIVEDEGREEROTATE,"Rotate Towards Crater");
+        moveStraight(MOVE_STRAIGHT_TO_CRATER,"Get to Crater");
+        runtime.reset();
+        while(runtime.time()<4){
+            collectorAngle.setPower(DRIVE_POWER);
+        }
+
+        while(runtime.time()<4){
+            linearExtender.setPower(DRIVE_POWER);
+        }
+
     }
 
-        /******************************************************************************/
+
+
+
+
+
+
+
+    /******************************************************************************/
         public void turnRight (int target_interval, String Status)
         {
 
