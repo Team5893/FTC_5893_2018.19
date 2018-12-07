@@ -176,13 +176,16 @@ public class IMUtest extends LinearOpMode {
         while (runtime.time() < 2) {
         }
 
-        rotate(-180, DRIVE_POWER);
+        rotate(-90, DRIVE_POWER);
 
         runtime.reset();
         while (runtime.time() < 2) {
         }
 
-        rotate(360, DRIVE_POWER);
+        rotate(178, DRIVE_POWER);
+        rotate(178, DRIVE_POWER);
+        rotate(4, DRIVE_POWER);
+
 
         telemetry.addData("1 imu heading", lastAngles.firstAngle);
         telemetry.addData("2 global heading", globalAngle);
@@ -393,7 +396,7 @@ public class IMUtest extends LinearOpMode {
      */
     private void resetAngle()
     {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
         globalAngle = 0;
     }
@@ -409,7 +412,7 @@ public class IMUtest extends LinearOpMode {
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
         // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES);
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
