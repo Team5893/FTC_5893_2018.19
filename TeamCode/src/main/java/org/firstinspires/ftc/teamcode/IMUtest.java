@@ -150,9 +150,22 @@ public class IMUtest extends LinearOpMode {
         telemetry.addData("Mode", "waiting for start");
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
+        telemetry.addData("1 imu heading", lastAngles.firstAngle);
+        telemetry.addData("2 global heading", globalAngle);
+        telemetry.addData("3 correction", correction);
+        telemetry.update();
+        telemetry.addLine("done");
+        telemetry.update();
 
         waitForStart();
         runtime.reset();
+
+        telemetry.addData("1 imu heading", lastAngles.firstAngle);
+        telemetry.addData("2 global heading", globalAngle);
+        telemetry.addData("3 correction", correction);
+        telemetry.update();
+        telemetry.addLine("done");
+        telemetry.update();
 
         //Back up a short distance
       //  turnLeft(DISTANCE, "2500 ec");
@@ -396,7 +409,7 @@ public class IMUtest extends LinearOpMode {
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
         // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES);
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
@@ -469,12 +482,27 @@ public class IMUtest extends LinearOpMode {
         if (degrees < 0)
         {
             // On right turn we have to get off zero first.
-            while (opModeIsActive() && getAngle() == 0) {}
+            while (opModeIsActive() && getAngle() == 0) {
+                telemetry.addData("1 imu heading", lastAngles.firstAngle);
+                telemetry.addData("2 global heading", globalAngle);
+                telemetry.addData("3 correction", correction);
+                telemetry.update();
+            }
 
-            while (opModeIsActive() && getAngle() > degrees) {}
+            while (opModeIsActive() && getAngle() > degrees) {
+                telemetry.addData("1 imu heading", lastAngles.firstAngle);
+                telemetry.addData("2 global heading", globalAngle);
+                telemetry.addData("3 correction", correction);
+                telemetry.update();
+            }
         }
         else    // left turn.
-            while (opModeIsActive() && getAngle() < degrees) {}
+            while (opModeIsActive() && getAngle() < degrees) {
+                telemetry.addData("1 imu heading", lastAngles.firstAngle);
+                telemetry.addData("2 global heading", globalAngle);
+                telemetry.addData("3 correction", correction);
+                telemetry.update();
+            }
 
         // turn the motors off.
         rightDrive.setPower(0);
@@ -485,6 +513,10 @@ public class IMUtest extends LinearOpMode {
 
         // reset angle tracking on new heading.
         resetAngle();
+        telemetry.addData("1 imu heading", lastAngles.firstAngle);
+        telemetry.addData("2 global heading", globalAngle);
+        telemetry.addData("3 correction", correction);
+        telemetry.update();
     }
 }
 
