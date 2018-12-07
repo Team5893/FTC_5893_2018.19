@@ -34,13 +34,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.vuforia.EyewearUserCalibrator;
-import com.qualcomm.robotcore.util.Range;
 
 
-
-@Autonomous(name="Auto2", group="Linear Opmode")
-public class Auto2 extends LinearOpMode {
+@Autonomous(name="DistanceTest", group="Linear Opmode")
+public class DistanceTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -76,7 +73,7 @@ public class Auto2 extends LinearOpMode {
     private static final int LEFT_QUARTER_CIRCLE = 2700;
     private static final int JEWEL_POSITION = 1000;
 
-    private static final int SMALL_DISTANCE = 40;
+    private static final int DISTANCE = 2500;
     private static final int JIGGLE_RIGHT = 250;
     private static final int JIGGLE_LEFT = -250;
     private static final int FORTYFIVEDEGREEROTATE = 500;
@@ -114,88 +111,11 @@ public class Auto2 extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
-        // while (opModeIsActive()) {
-        // lander_Run(LANDED_ROBOT);
-
-        lander_Run(LAND_ROBOT, "Lowering Lift");
-
-        landerStopper.setPosition(LANDER_CATCH_UP);
-        runtime.reset();
-        while (runtime.time() < 1) {
-        }
-
-        Unhook("Unhooking");
-
-/*        RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-1");
-
-        RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-2");
-
-        RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-3");
-
-        RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-4");
-
-        RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-3");
-
-        RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-4");
-*/
-        runtime.reset();
-        while (runtime.time() < 2) {
-        }
-
-//        turnLeft(TURN_TO_UNHOOK, "Unhooking");
-
-/*        runtime.reset();
-        while (runtime.time() < 2) {
-        }
-*/
-        telemetry.addLine("Landed");
-        telemetry.update();
-
-
         //Back up a short distance
-        moveStraight(SHORT_BACK, "BACKING UP");
+        turnLeft(DISTANCE, "2500 ec");
 
-        telemetry.addLine("FINISHED BACKING UP");
+        telemetry.addLine("done");
         telemetry.update();
-
-
-        runtime.reset();
-        while (runtime.time() < 2) {
-        }
-
-
-        //Turn 90 left forwards
-        turnRight(LEFT_QUARTER_CIRCLE, "First Turn");
-        telemetry.addLine("TURNED 90 LEFT");
-        telemetry.update();
-
-        runtime.reset();
-        while (runtime.time() < 2) {
-        }
-
-
-        moveStraight(BOX, "MOVING TO BOX");
-        telemetry.addLine("STOPPED IN BOX");
-        telemetry.update();
-
-        runtime.reset();
-        while (runtime.time() < 10) {
-        }
-
-
-        pincherL.setPosition(SERVOL_OPEN);
-        pincherR.setPosition(SERVOR_OPEN);
-        RotateInPlace(FORTYFIVEDEGREEROTATE, "Rotate Towards Crater");
-        moveStraight(MOVE_STRAIGHT_TO_CRATER, "Get to Crater");
-        runtime.reset();
-        while (runtime.time() < 1) {
-            collectorAngle.setPower(DRIVE_POWER);
-        }
-
-        while (runtime.time() < 2) {
-            linearExtender.setPower(DRIVE_POWER);
-        }
 
     }
 
@@ -366,13 +286,13 @@ public class Auto2 extends LinearOpMode {
 
         int initialRight = rightDrive.getCurrentPosition();
 
-        int targetForwardLeft = initialLeft + SMALL_DISTANCE;
+        int targetForwardLeft = initialLeft + DISTANCE;
 
-        int targetBackLeft = initialLeft - SMALL_DISTANCE;
+        int targetBackLeft = initialLeft - DISTANCE;
 
-        int targetForwardRight = initialRight + SMALL_DISTANCE;
+        int targetForwardRight = initialRight + DISTANCE;
 
-        int targetBackRight = initialRight - SMALL_DISTANCE;
+        int targetBackRight = initialRight - DISTANCE;
 
 
         for (int i=0; i<3; i++){
