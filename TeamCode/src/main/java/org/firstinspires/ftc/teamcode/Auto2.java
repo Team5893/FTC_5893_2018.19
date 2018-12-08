@@ -41,7 +41,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @Autonomous(name="Auto2", group="Linear Opmode")
 public class Auto2 extends LinearOpMode {
-
+//
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
