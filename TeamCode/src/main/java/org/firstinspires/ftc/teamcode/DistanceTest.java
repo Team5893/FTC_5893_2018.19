@@ -66,7 +66,7 @@ public class DistanceTest extends LinearOpMode {
     private static final int LAND_ROBOT = -9076;
     private static final double LANDER_CATCH_UP = 0.75;
     private static final double LANDER_CATCH_DOWN = 0;
-    private static final double TURN_SHARPNESS = 0.1;
+    private static final double TURN_SHARPNESS = 0.25;
     private static final int MOVE_STRAIGHT_TO_CRATER = 2500;
 
     private static final int DETACHED_ROBOT = 1000;
@@ -158,12 +158,12 @@ public class DistanceTest extends LinearOpMode {
 
         int initialRight = rightDrive.getCurrentPosition();
 
-
+        double target_Right = initialRight + (TURN_SHARPNESS * target_interval);
 
         int target_Left = initialLeft + (target_interval);
 
-        while (leftDrive.getCurrentPosition() < target_Left) {
-            rightDrive.setPower(STOP_MOTOR);
+        while (rightDrive.getCurrentPosition() < target_Right && leftDrive.getCurrentPosition() < target_Left) {
+            rightDrive.setPower(TURN_SHARPNESS * DRIVE_POWER);
             leftDrive.setPower(DRIVE_POWER);
 
             telemetry.addData("Run", "Time:   " + runtime.toString());
@@ -174,6 +174,7 @@ public class DistanceTest extends LinearOpMode {
 
             telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
             telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
+            telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
 
             telemetry.update();
         }

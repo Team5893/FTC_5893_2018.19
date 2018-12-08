@@ -51,6 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Gamepad", group="Linear Opmode")
+@Disabled
 //@Disabled
 public class GamepadLinear extends LinearOpMode {
 
