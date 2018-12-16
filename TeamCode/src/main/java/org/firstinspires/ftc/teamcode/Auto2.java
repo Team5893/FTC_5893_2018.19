@@ -73,13 +73,13 @@ public class Auto2 extends LinearOpMode {
     private static final int MOVE_STRAIGHT_TO_CRATER = 2500;
 
     private static final int DETACHED_ROBOT = 1000;
-    private static final int LEFT_QUARTER_CIRCLE = 2700;
+    private static final int RIGHT_QUARTER_CIRCLE = 2700;
     private static final int JEWEL_POSITION = 1000;
 
     private static final int SMALL_DISTANCE = 40;
     private static final int JIGGLE_RIGHT = 250;
     private static final int JIGGLE_LEFT = -250;
-    private static final int FORTYFIVEDEGREEROTATE = 500;
+    private static final int FORTY_FIVE_DEGREE_ROTATE = 500;
     //gets us tp base
     private static final int FORWARD_BASE = 3000;
 
@@ -125,7 +125,7 @@ public class Auto2 extends LinearOpMode {
         while (runtime.time() < 1) {
         }
 
-        Unhook("Unhooking");
+        //Unhook("Unhooking");
 
 /*        RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-1");
 
@@ -138,14 +138,14 @@ public class Auto2 extends LinearOpMode {
         RotateInPlace(JIGGLE_RIGHT,"Moving to get hook a little higher-3");
 
         RotateInPlace(JIGGLE_LEFT,"Moving to get hook a little higher-4");
-*/
+
         runtime.reset();
         while (runtime.time() < 2) {
         }
 
 //        turnLeft(TURN_TO_UNHOOK, "Unhooking");
 
-/*        runtime.reset();
+        runtime.reset();
         while (runtime.time() < 2) {
         }
 */
@@ -166,8 +166,8 @@ public class Auto2 extends LinearOpMode {
 
 
         //Turn 90 left forwards
-        turnRight(LEFT_QUARTER_CIRCLE, "First Turn");
-        telemetry.addLine("TURNED 90 LEFT");
+        turnRight(RIGHT_QUARTER_CIRCLE, "First Turn");
+        telemetry.addLine("TURNED 90 RIGHT");
         telemetry.update();
 
         runtime.reset();
@@ -186,13 +186,17 @@ public class Auto2 extends LinearOpMode {
 
         pincherL.setPosition(SERVOL_OPEN);
         pincherR.setPosition(SERVOR_OPEN);
-        RotateInPlace(FORTYFIVEDEGREEROTATE, "Rotate Towards Crater");
+        telemetry.addLine("Pinchers Open");
+        telemetry.update();
+        RotateInPlace(RIGHT_QUARTER_CIRCLE, "Rotate Towards Crater");
         moveStraight(MOVE_STRAIGHT_TO_CRATER, "Get to Crater");
+        telemetry.addLine("Parked on Crater");
+        telemetry.update();
         runtime.reset();
         while (runtime.time() < 1) {
             collectorAngle.setPower(DRIVE_POWER);
         }
-
+        runtime.reset();
         while (runtime.time() < 2) {
             linearExtender.setPower(DRIVE_POWER);
         }
