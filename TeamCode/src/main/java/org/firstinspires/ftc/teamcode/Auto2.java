@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -38,7 +39,7 @@ import com.vuforia.EyewearUserCalibrator;
 import com.qualcomm.robotcore.util.Range;
 
 
-
+@Disabled
 @Autonomous(name="Auto2", group="Linear Opmode")
 public class Auto2 extends LinearOpMode {
 

@@ -34,12 +34,17 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.DogeCV;
+import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+import com.disnodeteam.dogecv.detectors.roverrukus.SamplingOrderDetector;
 
 
-@Autonomous(name="Auto2", group="Linear Opmode")
+@Autonomous(name="Auto3", group="Linear Opmode")
 public class RealAuto extends LinearOpMode {
 
     // Declare OpMode members.
+    private GoldAlignDetector detector;
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
@@ -79,7 +84,7 @@ public class RealAuto extends LinearOpMode {
     private static final int FORTY_FIVE_DEGREE_ROTATE = 500;
     //gets us tp base
     private static final int FORWARD_BASE = 3000;
-
+boolean Tester= true;
     //public ElapsedTime mRuntime=new ElapsedTime();
     @Override
     public void runOpMode() throws InterruptedException {
@@ -107,6 +112,23 @@ public class RealAuto extends LinearOpMode {
         pincherL.setPosition(SERVOL_CLOSED);
         pincherR.setPosition(SERVOR_CLOSED);
 
+        detector = new GoldAlignDetector(); // Create detector
+        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
+        detector.useDefaults(); // Set detector to use default settings
+
+        // Optional tuning
+        detector.alignSize = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
+        detector.downscale = 0.4; // How much to downscale the input frames
+
+        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
+        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+        detector.maxAreaScorer.weight = 0.005; //
+
+        detector.ratioScorer.weight = 5; //
+        detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
+
+
         waitForStart();
         runtime.reset();
 
@@ -128,13 +150,20 @@ public class RealAuto extends LinearOpMode {
         telemetry.addLine("TURNED 90 RIGHT");
         telemetry.update();
 
+        detector.enable();
+        while (Tester) {
+            telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
+            telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
 
 
+        if(detector.getAligned()){}
+
+        }
 
 
 
     }
-    
+
 
 
 
