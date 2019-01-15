@@ -48,16 +48,24 @@ public class AutoWithDogeCV extends LinearOpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor landerLift = null;
+    private DcMotor linearExtender = null;
+    private DcMotor collectorAngle = null;
+    private DcMotor collectorSpinner = null;
 
+
+    Servo landerStopper;
 
 
     private static final double STOP_MOTOR = 0;
     private static final double DRIVE_POWER = 0.75;
-
+    private static final int SHORT_BACK = -500;
     private static final double LANDER_LIFT_POWER = 0.5;
-
+    private static final int LAND_ROBOT = -36076;
     private static final int MOVE_JEWEL = 1000;
-
+    private static final double LANDER_CATCH_UP = 0.75;
+    private static final double LANDER_CATCH_DOWN = 0;
+    private static final int SHORTER_BACK = -100;
+    private static final int SHORT_FORWARD = 100;
 
 
     @Override
@@ -65,6 +73,15 @@ public class AutoWithDogeCV extends LinearOpMode {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        landerLift = hardwareMap.get(DcMotor.class, "Lander_Lift");
+        linearExtender = hardwareMap.get(DcMotor.class, "Linear_Extension");
+        collectorAngle = hardwareMap.get(DcMotor.class, "Collector_Angle");
+        collectorSpinner = hardwareMap.get(DcMotor.class, "Collector_Spinner");
+
+
+        landerStopper = hardwareMap.servo.get("Lander_Stop");
+
+
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -92,9 +109,11 @@ public class AutoWithDogeCV extends LinearOpMode {
 
 
 
-        waitForStart();
-//        lander_Run(LAND_ROBOT,"Land The Robot");
-//        moveStraight(SHORT_BACK,"Unhook");
+            lander_Run(LAND_ROBOT,"Land The Robot");
+            landerStopper.setPosition(LANDER_CATCH_UP);
+             moveStraight(SHORTER_BACK,"Unhook");
+             moveStraight(SHORT_FORWARD" Short back ");
+            moveStraight(SHORT_BACK,"Unhook");
         while(!detector.getAligned())
         {
 

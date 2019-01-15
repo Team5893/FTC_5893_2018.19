@@ -31,6 +31,7 @@ public class TeleOp2 extends LinearOpMode {
     private DcMotor landerLift = null;
     private DcMotor linearExtender = null;
     private DcMotor collectorAngle = null;
+    private DcMotor collectorSpinner = null;
     Servo pincherR;
     Servo pincherL;
     Servo landerStopper;
@@ -57,7 +58,7 @@ public class TeleOp2 extends LinearOpMode {
     private static final double SLOW_MODE = 0.25;
     private static final double FAST_MODE =1;
     private static final double MEDIUM_MODE = .5;
-
+    private static final int STOP_POWER = 0;
 
 
 
@@ -82,6 +83,8 @@ public class TeleOp2 extends LinearOpMode {
         landerLift = hardwareMap.get(DcMotor.class, "Lander_Lift");
         linearExtender = hardwareMap.get(DcMotor.class, "Linear_Extension");
         collectorAngle = hardwareMap.get(DcMotor.class, "Collector_Angle");
+        collectorSpinner = hardwareMap.get(DcMotor.class, "Collector_Spinner");
+
 
         pincherR = hardwareMap.servo.get("right_pincher");
         pincherL = hardwareMap.servo.get("left_pincher");
@@ -142,26 +145,27 @@ public class TeleOp2 extends LinearOpMode {
             //Servo Code
             if(gamepad1.left_bumper || gamepad2.left_bumper)
             {
-                pincherL.setPosition(SERVOL_OPEN);
+                collectorSpinner.setPower(-FAST_MODE);
             }
-
-
-
-            else if(  gamepad1.left_trigger > TRIGGER_THRESHOLD || gamepad2.left_trigger > TRIGGER_THRESHOLD)//make a constant for trigger threshold
+            else if(  gamepad1.right_bumper || gamepad2.right_bumper)//make a constant for trigger threshold
             {
-                pincherL.setPosition(SERVOL_CLOSED);
+                collectorSpinner.setPower(FAST_MODE);
             }
-
-            if(gamepad1.right_bumper || gamepad2.right_bumper) {
-                pincherR.setPosition(SERVOR_OPEN);
-            } else if ( gamepad1.right_trigger > TRIGGER_THRESHOLD || gamepad2.right_trigger > TRIGGER_THRESHOLD) //make a constant for trigger threshold
+            else
             {
-                pincherR.setPosition(SERVOR_CLOSED);
+                collectorSpinner.setPower(STOP_POWER);
             }
 
-            telemetry.addData("Right Pincher: Servo Position", pincherR.getPosition());
-            telemetry.addData("Left Pincher: Servo Position", pincherL.getPosition());
-            telemetry.addData("Status", "Running");
+//            if(gamepad1.right_bumper || gamepad2.right_bumper) {
+//                pincherR.setPosition(SERVOR_OPEN);
+//            } else if ( gamepad1.right_trigger > TRIGGER_THRESHOLD || gamepad2.right_trigger > TRIGGER_THRESHOLD) //make a constant for trigger threshold
+//            {
+//                pincherR.setPosition(SERVOR_CLOSED);
+//            }
+//
+//            telemetry.addData("Right Pincher: Servo Position", pincherR.getPosition());
+//            telemetry.addData("Left Pincher: Servo Position", pincherL.getPosition());
+           telemetry.addData("Status", "Running");
 
 
 
@@ -205,7 +209,7 @@ public class TeleOp2 extends LinearOpMode {
 
     }
 
-    }
+}
 
 
 
