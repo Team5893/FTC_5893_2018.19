@@ -53,18 +53,24 @@ public class AutoWithDogeCV extends LinearOpMode {
     private DcMotor collectorSpinner = null;
 
 
+
     Servo landerStopper;
 
 
+
+
+    public int currentPosition;
+    public int newPosition;
+
     private static final double STOP_MOTOR = 0;
     private static final double DRIVE_POWER = 0.75;
-    private static final int SHORT_BACK = -500;
+    private static final int SHORT_BACK = -1000;
     private static final double LANDER_LIFT_POWER = 0.5;
-    private static final int LAND_ROBOT = -36076;
-    private static final int MOVE_JEWEL = 1000;
+    private static final int LAND_ROBOT = -40076;
+    private static final int MOVE_JEWEL = 1100;
     private static final double LANDER_CATCH_UP = 0.75;
     private static final double LANDER_CATCH_DOWN = 0;
-    private static final int SHORTER_BACK = -100;
+    private static final int SHORTER_BACK = -200;
     private static final int SHORT_FORWARD = 100;
 
 
@@ -104,27 +110,47 @@ public class AutoWithDogeCV extends LinearOpMode {
         detector.ratioScorer.weight = 5; //
         detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
-        detector.enable(); // Start the detector!
+        // Start the detector!
 
 
-
-
-            lander_Run(LAND_ROBOT,"Land The Robot");
-            landerStopper.setPosition(LANDER_CATCH_UP);
+            waitForStart();
+            detector.enable();
+        //lander_Run(LAND_ROBOT,"Land The Robot");
+          //  landerStopper.setPosition(LANDER_CATCH_UP);
              moveStraight(SHORTER_BACK,"Unhook");
-             moveStraight(SHORT_FORWARD" Short back ");
-            moveStraight(SHORT_BACK,"Unhook");
+             moveStraight(SHORT_FORWARD," Short back ");
+            RightDrive(-350,"getting off");
+            moveStraight(SHORTER_BACK,"Not get stuck");
+        currentPosition = rightDrive.getCurrentPosition() ;
         while(!detector.getAligned())
         {
 
             rightDrive.setPower(DRIVE_POWER);
+            newPosition = rightDrive.getCurrentPosition() ;
             telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
             telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
+            telemetry.addData("Pos rightDrive", rightDrive.getCurrentPosition()); // Gold X position.
 
         }
         rightDrive.setPower(STOP_MOTOR);
-        moveStraight(MOVE_JEWEL,"KnockJewelOff");
+        RightDrive(-170,"getting off");
+//      moveStraight(MOVE_JEWEL,"KnockJewelOff");
+        telemetry.addData("Pos rightDrive", rightDrive.getCurrentPosition()); // Gold X position.
+        if(newPosition-currentPosition <= 500)
+        {
+            moveStraight(MOVE_JEWEL,"KnockJewelOff");
+        }
+        else if (newPosition-currentPosition <= 800)
+        {
+            moveStraight(2000,"get to base");
+        }
+        else if (newPosition-currentPosition >= 800)
+        {
+            moveStraight(MOVE_JEWEL,"KnockJewelOff");
+
+        }
         detector.disable();
+
 
 
 
@@ -230,6 +256,22 @@ public class AutoWithDogeCV extends LinearOpMode {
 
     }
 
+    public void RightDrive (int target_interval, String Status) {
+
+        int initialPos = rightDrive.getCurrentPosition();
+        int target_pos = initialPos + target_interval;
+        if (initialPos < target_pos) {
+            while (rightDrive.getCurrentPosition() < target_pos) {
+                rightDrive.setPower(LANDER_LIFT_POWER);
+            }
+        } else if (initialPos > target_pos) {
+            while (rightDrive.getCurrentPosition() > target_pos) {
+                rightDrive.setPower(-LANDER_LIFT_POWER);
+            }
+        }
+
+        rightDrive.setPower(STOP_MOTOR);
+    }
 
 
 

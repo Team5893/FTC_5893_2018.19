@@ -204,6 +204,7 @@ public class TeleOp2 extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Speed Multiplier",speedMultiplier);
+            telemetry.addData("pos",rightDrive.getCurrentPosition());
             telemetry.update();
         }
 
