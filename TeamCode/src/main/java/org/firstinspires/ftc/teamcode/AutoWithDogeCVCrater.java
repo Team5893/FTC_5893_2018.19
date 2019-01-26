@@ -32,16 +32,16 @@ package org.firstinspires.ftc.teamcode;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name="AutoWithDogeCV", group="DogeCV")
+@Autonomous(name="AutoWithDogeCVCrater", group="DogeCV")
 
-public class AutoWithDogeCV extends LinearOpMode {
+public class AutoWithDogeCVCrater extends LinearOpMode {
     // Detector object
 
     private GoldAlignDetector detector;
@@ -67,7 +67,7 @@ public class AutoWithDogeCV extends LinearOpMode {
     private static final double DRIVE_POWER = 0.55;
     private static final int SHORT_BACK = -1000;
     private static final double LANDER_LIFT_POWER = 1;
-    private static final int LAND_ROBOT = -11076;
+    private static final int LAND_ROBOT = -11000;
     private static final int MOVE_JEWEL = 1600;
     private static final double LANDER_CATCH_UP = 0.75;
     private static final double LANDER_CATCH_DOWN = 0;
@@ -143,35 +143,21 @@ public double Time;
         {
             RightDrive(250,"getting off");
             telemetry.addData("Time", runtime.time() ); // Gold X position.
-
+            RotateInPlace(500,"Turn Towards Crater");
         }
         telemetry.addData("Pos rightDrive", rightDrive.getCurrentPosition()); // Gold X position.
             moveStraight(2000,"KnockJewelOff");
-        if(Time<2.8)
+       runtime.reset();
+       while(runtime.time()<1.5)
+       {
+           collectorAngle.setPower(1);
+       }
+        runtime.reset();
+        while(runtime.time()<1.25)
         {
-            RightDrive(450, "face base");
-             moveStraight(1500,"Get to base");
-            while(runtime.time()<0.25)
-            {
-                collectorSpinner.setPower(.25);
-            }
-            collectorSpinner.setPower(STOP_MOTOR);
+            linearExtender.setPower(1);
         }
-        else if(Time<3.8)
-        {
-            moveStraight(1000,"get to base");
-            runtime.reset();
-            while(runtime.time()<0.25)
-            {
-                collectorSpinner.setPower(.25);
-            }
-            collectorSpinner.setPower(STOP_MOTOR);
-        }
-        else if (Time>3.8)
-        {
-            telemetry.addData("Need to increase",2000); // Gold X position.
 
-        }
             //RotateInPlace(500,"get in depot");
 
 

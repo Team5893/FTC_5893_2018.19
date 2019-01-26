@@ -67,7 +67,7 @@ public class TeleOp2 extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -200,7 +200,7 @@ public class TeleOp2 extends LinearOpMode {
 
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Lander Lift Position",landerLift.getCurrentPosition() );
+            telemetry.addData("Lander Lift Position", landerLift.getCurrentPosition() );
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Speed Multiplier",speedMultiplier);
