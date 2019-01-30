@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
+                 /* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -59,12 +59,12 @@ public class AutoWithDogeCVCrater extends LinearOpMode {
 
 
 
-
+    public int goldPos=0;
     public int currentPosition;
     public int newPosition;
 
     private static final double STOP_MOTOR = 0;
-    private static final double DRIVE_POWER = 0.55;
+    private static final double DRIVE_POWER = 0.40;
     private static final int SHORT_BACK = -1000;
     private static final double LANDER_LIFT_POWER = 1;
     private static final int LAND_ROBOT = -11000;
@@ -122,6 +122,7 @@ public double Time;
 
             RightDrive(-350,"getting off");
             moveStraight(SHORTER_BACK,"Not get stuck");
+        lander_Run(-LAND_ROBOT/2,"Land The Robot");
         currentPosition = rightDrive.getCurrentPosition() ;
         runtime.reset();
         while(!detector.getAligned())
@@ -141,19 +142,27 @@ public double Time;
         telemetry.addData("Pos at TIme", Time); // Gold X position.
         if  (runtime.time() > 2.5)
         {
+            goldPos = 3;
             RightDrive(250,"getting off");
             telemetry.addData("Time", runtime.time() ); // Gold X position.
-            RotateInPlace(500,"Turn Towards Crater");
+
         }
         telemetry.addData("Pos rightDrive", rightDrive.getCurrentPosition()); // Gold X position.
-            moveStraight(2000,"KnockJewelOff");
-       runtime.reset();
+        moveStraight(2000,"KnockJewelOff");
+        if(goldPos==3){
+            RotateInPlace(250,"Not Point Out");
+        }
+
+
+        runtime.reset();
        while(runtime.time()<1.5)
        {
            collectorAngle.setPower(1);
        }
+
+
         runtime.reset();
-        while(runtime.time()<1.25)
+        while(runtime.time()<1.25 && goldPos != 3)
         {
             linearExtender.setPower(1);
         }

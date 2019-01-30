@@ -64,7 +64,7 @@ public class AutoWithDogeCV extends LinearOpMode {
     public int newPosition;
 
     private static final double STOP_MOTOR = 0;
-    private static final double DRIVE_POWER = 0.55;
+    private static final double DRIVE_POWER = 0.4;
     private static final int SHORT_BACK = -1000;
     private static final double LANDER_LIFT_POWER = 1;
     private static final int LAND_ROBOT = -11076;
